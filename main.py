@@ -6,11 +6,17 @@ from app.timer import Timer
 from app.config import load_config
 
 
+def update_overlay_time(overlay, minutes):
+    overlay.remaining_minutes = minutes
+    overlay.update()
+
+
 def main():
     app = QApplication(sys.argv)
     config = load_config()
     overlay = Overlay("green")
     timer = Timer(overlay, config["work_duration"], config["break_duration"])
+    timer.time_updated.connect(lambda minutes: update_overlay_time(overlay, minutes))
     timer.start()
     sys.exit(app.exec())
 
