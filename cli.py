@@ -3,7 +3,7 @@ import os
 import click
 import subprocess
 import psutil
-from app.config import load_config, save_config
+from app.utils import load_config, save_config
 
 # Constants
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
