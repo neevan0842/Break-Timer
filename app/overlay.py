@@ -5,6 +5,8 @@ from PyQt6.QtGui import QPainter, QColor, QFont
 
 
 class Overlay(QWidget):
+    """Overlay widget for displaying timer status."""
+
     def __init__(self, color):
         super().__init__()
         self.color = color
@@ -19,6 +21,7 @@ class Overlay(QWidget):
         self.show()
 
     def paintEvent(self, event):
+        """Handle painting of the overlay widget."""
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setBrush(QColor(self.color))
@@ -36,11 +39,13 @@ class Overlay(QWidget):
         painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, time_text)
 
     def mousePressEvent(self, event):
+        """Handle mouse press events for dragging."""
         if event.button() == Qt.MouseButton.LeftButton:
             self.drag_position = (
                 event.globalPosition().toPoint() - self.frameGeometry().topLeft()
             )
 
     def mouseMoveEvent(self, event):
+        """Handle mouse move events for dragging."""
         if event.buttons() == Qt.MouseButton.LeftButton:
             self.move(event.globalPosition().toPoint() - self.drag_position)

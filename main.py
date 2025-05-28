@@ -1,6 +1,7 @@
 import sys
 import click
 import subprocess
+from app.logger import logger
 from PyQt6.QtWidgets import QApplication
 from app.overlay import Overlay
 from app.timer import Timer
@@ -58,12 +59,11 @@ def cli():
 def start():
     """Start the Break Timer application."""
     try:
-        # Start the application in a non-blocking way using subprocess.Popen
         process = subprocess.Popen([sys.executable, __file__, "run"])
-        set_pid(process.pid)  # Save the PID to a file
-        click.echo("Break Timer started successfully.")
+        set_pid(process.pid)
+        logger.info("Break Timer started successfully.")
     except Exception as e:
-        click.echo(f"Error starting the application: {e}")
+        logger.error(f"Error starting the application: {e}")
 
 
 @cli.command()
@@ -71,9 +71,9 @@ def stop():
     """Stop the Break Timer application."""
     try:
         delete_process()
-        click.echo("Application stopped successfully.")
+        logger.info("Application stopped successfully.")
     except Exception as e:
-        click.echo(f"Error: {e}")
+        logger.error(f"Error: {e}")
 
 
 @cli.command()
@@ -81,9 +81,9 @@ def status():
     """Check the status of the Break Timer application."""
     pid = is_process_running()
     if pid is None:
-        click.echo("Application is not running.")
+        logger.info("Application is not running.")
     else:
-        click.echo(
+        logger.info(
             f"PID: {pid}, Work: {app.config['work_duration']}, Break: {app.config['break_duration']}"
         )
 
@@ -95,12 +95,12 @@ def set_work(minutes):
     try:
         app.config["work_duration"] = minutes
         save_config(app.config)
-        delete_process()  # Stop the current process to apply changes
+        delete_process()
         process = subprocess.Popen([sys.executable, __file__, "run"])
-        set_pid(process.pid)  # Save the PID to a file
-        click.echo(f"Work duration set to {minutes} minutes.")
+        set_pid(process.pid)
+        logger.info(f"Work duration set to {minutes} minutes.")
     except Exception as e:
-        click.echo(f"Error setting work duration: {e}")
+        logger.error(f"Error setting work duration: {e}")
 
 
 @cli.command()
@@ -110,12 +110,12 @@ def set_break(minutes):
     try:
         app.config["break_duration"] = minutes
         save_config(app.config)
-        delete_process()  # Stop the current process to apply changes
+        delete_process()
         process = subprocess.Popen([sys.executable, __file__, "run"])
-        set_pid(process.pid)  # Save the PID to a file
-        click.echo(f"Break duration set to {minutes} minutes.")
+        set_pid(process.pid)
+        logger.info(f"Break duration set to {minutes} minutes.")
     except Exception as e:
-        click.echo(f"Error setting break duration: {e}")
+        logger.error(f"Error setting break duration: {e}")
 
 
 @cli.command()
