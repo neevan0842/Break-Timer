@@ -1,4 +1,3 @@
-import os
 import sys
 import click
 import subprocess
@@ -96,6 +95,9 @@ def set_work(minutes):
     try:
         app.config["work_duration"] = minutes
         save_config(app.config)
+        delete_process()  # Stop the current process to apply changes
+        process = subprocess.Popen([sys.executable, __file__, "run"])
+        set_pid(process.pid)  # Save the PID to a file
         click.echo(f"Work duration set to {minutes} minutes.")
     except Exception as e:
         click.echo(f"Error setting work duration: {e}")
@@ -108,6 +110,9 @@ def set_break(minutes):
     try:
         app.config["break_duration"] = minutes
         save_config(app.config)
+        delete_process()  # Stop the current process to apply changes
+        process = subprocess.Popen([sys.executable, __file__, "run"])
+        set_pid(process.pid)  # Save the PID to a file
         click.echo(f"Break duration set to {minutes} minutes.")
     except Exception as e:
         click.echo(f"Error setting break duration: {e}")
