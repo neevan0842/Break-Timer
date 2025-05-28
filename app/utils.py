@@ -40,8 +40,7 @@ def delete_process():
     """Delete the PID file."""
     pid = get_pid()
     if pid is None:
-        click.echo("Application is not running.")
-        return
+        raise click.ClickException("Application is not running.")
     process = psutil.Process(pid)
     process.terminate()
     process.wait(timeout=3)

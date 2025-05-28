@@ -74,7 +74,7 @@ def stop():
         delete_process()
         click.echo("Application stopped successfully.")
     except Exception as e:
-        click.echo(f"Error stopping application: {e}")
+        click.echo(f"Error: {e}")
 
 
 @cli.command()
