@@ -89,6 +89,18 @@ def status():
 
 
 @cli.command()
+def restart():
+    """Restart the Break Timer application."""
+    try:
+        delete_process()
+        process = subprocess.Popen([sys.executable, __file__, "run"])
+        set_pid(process.pid)
+        logger.info("Application restarted successfully.")
+    except Exception as e:
+        logger.error(f"Error: {e}")
+
+
+@cli.command()
 @click.argument("minutes", type=int)
 def set_work(minutes):
     """Set the work duration in minutes."""
